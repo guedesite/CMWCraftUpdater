@@ -23,7 +23,7 @@ public class main {
 		File baseDir = new File("oldVersion/");
 		try {
 			loopDir(baseDir);
-			rmdir(new File("newVersion/"));
+			rmdir(new File("newVersion/"), false);
 			System.out.println("end in "+Math.round((System.currentTimeMillis() - a) /1000 ) + "s");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -81,7 +81,7 @@ public class main {
 		} */
 	}
 	
-	public static boolean rmdir(final File folder) {
+	public static boolean rmdir(final File folder, boolean nofirst) {
 	      if (folder.isDirectory()) {
 	          File[] list = folder.listFiles();
 	          int d = 0;
@@ -89,7 +89,7 @@ public class main {
 	              for (int i = 0; i < list.length; i++) {
 	                  File tmpF = list[i];
 	                  if (tmpF.isDirectory()) {
-	                      if(!rmdir(tmpF)) {
+	                      if(!rmdir(tmpF, true)) {
 	                    	  d = 9;
 	                      }
 	                  } else {
@@ -98,6 +98,9 @@ public class main {
 	              }
 	          }
 	          if(d == 0) {
+	        	  if(!nofirst) {
+	        		 return true; 
+	        	  }
 	        	  if (!folder.delete()) {
 	        		  try {
 						FileUtils.deleteDirectory(folder);
